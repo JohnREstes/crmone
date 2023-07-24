@@ -1,0 +1,132 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #161616;
+  color: hsla(0, 0%, 100%, .4);
+}
+
+header {
+  background-color: #161616;
+  color: hsla(0, 0%, 100%, .4);
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid hsla(0, 0%, 100%, .1); 
+}
+
+header h1 {
+  margin: 0;
+}
+
+header h1:hover{
+  color: #C084FC;
+}
+
+header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.horizontal-nav {
+  background-color: #161616;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 2px solid hsla(0, 0%, 100%, .1);
+}
+
+.horizontal-nav a{
+  color:#fff;
+  text-decoration: none;
+}
+
+.horizontal-nav-item {
+  color: #fff;
+  display: flex; 
+  align-items: center; 
+}
+
+.horizontal-nav-item a {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+}
+
+
+a:hover {
+  color:rgba(216, 180, 254);
+}
+
+.container {
+  padding: 20px;
+}
+
+.container p {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 20px; 
+}
+
+ul.notifications {
+  list-style: none;
+}
+
+.notification {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #1f1f1f;
+  border: 1px solid hsla(0, 0%, 100%, .1);
+  border-radius: 4px;
+  color: #fff;
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+/* Style for read notifications */
+.notification.read {
+  background-color: #444444;
+}
+
+/* Style for unread notifications */
+.notification.unread {
+  background-color: #666666;
+}
+
+
+.notification-message {
+  flex: 1; 
+}
+
+.notification-actions {
+  display: flex; 
+  align-items: center; 
+}
+
+
+.notification-actions button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center; 
+}

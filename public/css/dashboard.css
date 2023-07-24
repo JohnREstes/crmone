@@ -1,0 +1,173 @@
+/* Reset some default styles to improve consistency across browsers */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #161616;
+  color: hsla(0, 0%, 100%, .4);
+}
+
+header {
+  background-color: #161616;
+  color: hsla(0, 0%, 100%, .4);
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid hsla(0, 0%, 100%, .1); 
+}
+
+header h1 {
+  margin: 0;
+}
+
+header h1:hover{
+  color: #C084FC;
+}
+
+header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+header div {
+  display: flex; 
+  align-items: center; 
+}
+
+.notification-button {
+  margin-right: 10px; 
+}
+
+.notification-count {
+  font-size: 0.8rem;
+  background-color: hsla(0, 0%, 100%, .4);;
+  color: #fff;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin-left: 5px;
+}
+
+.logout-button {
+  display: flex; 
+  align-items: center; 
+}
+
+h2 {
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.horizontal-nav {
+  background-color: #161616;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 2px solid hsla(0, 0%, 100%, .1);
+}
+
+.horizontal-nav a{
+  color:#fff;
+}
+
+.horizontal-nav-item {
+  color: #fff;
+}
+
+.search-bar {
+  display: flex; 
+  align-items: center; 
+  background-color: #1f1f1f;
+  border: 1px solid hsla(0, 0%, 100%, .1);
+  border-radius: 4px;
+  padding: 10px; 
+  margin-right: 10px; 
+  width: 300px; 
+}
+
+#searchInput {
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  outline: none;
+  flex: 1; 
+  width: 100%; 
+}
+
+#searchInput::placeholder {
+  color: hsla(0, 0%, 100%, .6);
+}
+
+
+.requests-table {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th{
+  color:rgba(255, 255, 255, 0.3);
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border: none;
+  border-bottom: 1px solid hsla(0, 0%, 100%, .1);
+  
+}
+
+td{
+  color: #fff;
+}
+
+td img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle; 
+}
+
+td span {
+  vertical-align: middle; 
+}
+
+th:last-child, td:last-child {
+  text-align: center;
+}
+
+
+
+.action-icons {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-around;
+}
+
+.delete-form button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+a:hover {
+  color:rgba(216, 180, 254);
+}

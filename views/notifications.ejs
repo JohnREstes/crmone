@@ -1,0 +1,93 @@
+<!-- views/notifications.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ... -->
+  <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+
+<body>
+
+  <header>
+
+    <h1>OneCRM</h1>
+    <div>
+      <a href="/logout">Logout</a>
+    </div>
+    
+  </header>
+
+  <div class="horizontal-nav">
+    <div class="horizontal-nav-item">Notifications</div>
+    <div class="horizontal-nav-item">
+      <a href="/dashboard">
+        <!-- <svg width="20px" height="20px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"><rect x="0" y="0" width="25.00" height="25.00" rx="0" fill="#161616" strokewidth="0"></rect></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 21.32L21 3.32001" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 3.32001L21 21.32" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
+        Close
+      </a>
+    </div>
+  </div>
+
+  
+
+  <div class="container">
+    <% if (notifications.length === 0) { %>
+      <p>You have no notifications.</p>
+    <% } else { %>
+      <ul class="notifications">
+        <% notifications.forEach(notification => { %>
+          <li id="<%= notification._id %>" class="notification <%= notification.read ? 'read' : 'unread' %>">
+            <div class="notification-message">
+              <%= notification.message %>
+            </div>
+            <div class="notification-actions">
+              <% if (!notification.read) { %>
+                <button class="mark-read-button" data-notification-id="<%= notification._id %>">
+                  <svg width="20px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.032"></g><g id="SVGRepo_iconCarrier"> <path d="m1.75 9.75 2.5 2.5m3.5-4 2.5-2.5m-4.5 4 2.5 2.5 6-6.5"></path> </g></svg>
+                </button>
+              <% } %>
+              <button class="delete-button" onclick="deleteNotification('<%= notification._id %>')">
+                <svg width="20px" height="20px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+              </button>
+            </div>
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
+  </div>
+  
+
+  <script>
+    // Function to delete a notification
+    function deleteNotification(notificationId) {
+      fetch(`/notifications/${notificationId}/delete`, { method: 'POST' })
+        .then(() => location.reload())
+        .catch((error) => {
+          console.error('Error deleting notification:', error);
+        });
+    }
+
+    // Function to mark a notification as read
+    const markReadButtons = document.querySelectorAll('.mark-read-button');
+
+    markReadButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const notificationId = button.getAttribute('data-notification-id');
+        markNotificationAsRead(notificationId);
+      });
+    });
+
+    async function markNotificationAsRead(notificationId) {
+      try {
+        await fetch(`/notifications/${notificationId}/read`, { method: 'POST' });
+        const notificationLi = document.getElementById(notificationId);
+        notificationLi.classList.remove('unread'); // Remove the 'unread' class
+        notificationLi.classList.add('read'); // Add the 'read' class
+        const markReadButton = notificationLi.querySelector('.mark-read-button');
+        markReadButton.style.display = 'none'; // Hide the "Mark as Read" button
+      } catch (error) {
+        console.error('Error marking notification as read:', error);
+      }
+    }
+  </script>
+</body>
+</html>
