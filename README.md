@@ -17,11 +17,11 @@ OneCRM is a simple Customer Relationship Management (CRM) application built usin
 
 **Environment Variables**: Create a .env file and set the following environment variables:
 
-MONGODB_URI=your_mongodb_uri
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-SESSION_SECRET=your_session_secret
-PORT=3000
+MONGODB_URI=your_mongodb_uri  
+GOOGLE_CLIENT_ID=your_google_client_id  
+GOOGLE_CLIENT_SECRET=your_google_client_secret  
+SESSION_SECRET=your_session_secret  
+PORT=3000  
 
 **Run the Application**: Start the server by running npm start. The application will be accessible at http://localhost:3000.
 
