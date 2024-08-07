@@ -10,6 +10,8 @@ const dashboardRoutes = require('./routes/dashboard');
 const notificationRoutes = require('./routes/notification');
 
 const User = require('./models/user');
+const uri = `mongodb+srv://support:${process.env.MONGO_DB_PW}@johnetravelsapi.oni63tx.mongodb.net/?retryWrites=true&w=majority&appName=JohnETravelsAPI`;
+
 
 // Load environment variables from .env file
 dotenv.config();
@@ -19,7 +21,7 @@ const app = express();
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
