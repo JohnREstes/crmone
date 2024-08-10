@@ -10,21 +10,18 @@ const dashboardRoutes = require('./routes/dashboard');
 const notificationRoutes = require('./routes/notification');
 
 const User = require('./models/user');
-const uri = `mongodb+srv://support:${process.env.MONGO_DB_PW}@johnetravelsapi.oni63tx.mongodb.net/?retryWrites=true&w=majority&appName=JohnETravelsAPI`;
-
 
 // Load environment variables from .env file
 dotenv.config();
 
 // Initialize Express app
 const app = express();
+mongoose.set('debug', true);
 
-// Connect to MongoDB
+const uri = `mongodb+srv://support:${process.env.MONGO_DB_PW}@johnetravelsapi.oni63tx.mongodb.net/crmone?retryWrites=true&w=majority&appName=JohnETravelsAPI`;
+
 mongoose
-  .connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(uri)
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error('MongoDB connection error:', error));
 
@@ -86,7 +83,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(express.json());
 
 // Routes
 app.use('/', indexRoutes);

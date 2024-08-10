@@ -1,12 +1,11 @@
+// routes/dashboard.js
 const express = require('express');
-const router = express.Router();
+const router = express.Router();  // Add this line
 const Request = require('../models/request');
 const User = require('../models/user');
 const { isAuthenticated } = require('../middleware');
 
-
 // List all requests & load Notifications
-
 router.get('/', isAuthenticated, async (req, res) => {
   try {
     const user = req.user;
@@ -14,15 +13,14 @@ router.get('/', isAuthenticated, async (req, res) => {
     let requests;
 
     if (req.query.q) {
-      // If there's a search query, perform a case-insensitive search on the 'name' field
-      requests = await Request.find({ name: { $regex: new RegExp(req.query.q, 'i') } }).populate('owner', '_id name profileImage');
+      // If there's a search query, perform a case-insensitive search on the 'fullName' field
+      requests = await Request.find({ fullName: { $regex: new RegExp(req.query.q, 'i') } }).populate('owner', '_id name profileImage');
     } else {
       // If there's no search query, list all requests
       requests = await Request.find().populate('owner', '_id name profileImage');
     }
 
     const notifications = user.notifications;
-    // Fetch notifications for the user
     const unreadNotificationCount = notifications.filter(notification => !notification.read).length;
 
     res.render('dashboard', { requests, users, unreadNotificationCount });
@@ -31,7 +29,6 @@ router.get('/', isAuthenticated, async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
 
 // Create a new request
 router.get('/create', isAuthenticated, async (req, res) => {
@@ -44,21 +41,32 @@ router.get('/create', isAuthenticated, async (req, res) => {
   }
 });
 
-
 router.post('/create', isAuthenticated, async (req, res) => {
   try {
-    const { type, name, tag, owner, deadline, status } = req.body;
-    const existingRequests = await Request.find();
-    const id = existingRequests.length + 1;
+    const { fullName, dob, address, email, passportNumber, passportCountry, passportExpiry, frequentFlierNumbers, creditCard, trips, notes, owner } = req.body;
 
-    const request = new Request({ id, type, name, tag, owner, deadline, status });
+    const request = new Request({
+      fullName,
+      dob,
+      address,
+      email,
+      passportNumber,
+      passportCountry,
+      passportExpiry,
+      frequentFlierNumbers,
+      creditCard,
+      trips,
+      notes,
+      owner
+    });
+
     await request.save();
 
     // Create a notification for the owner
     const ownerUser = await User.findById(owner);
     if (ownerUser) {
       ownerUser.notifications.push({
-        message: `You have been assigned a new ${type}: ${name}`,
+        message: `You have been assigned a new request: ${fullName}`,
         type: 'request',
         data: {
           requestId: request._id,
@@ -75,7 +83,6 @@ router.post('/create', isAuthenticated, async (req, res) => {
 });
 
 // Edit a request
-
 router.get('/:id/edit', isAuthenticated, async (req, res) => {
   try {
     const request = await Request.findById(req.params.id);
@@ -92,15 +99,23 @@ router.get('/:id/edit', isAuthenticated, async (req, res) => {
 
 router.post('/:id/edit', isAuthenticated, async (req, res) => {
   try {
-    const { type, name, tag, owner, deadline, status } = req.body;
+    const { fullName, dob, address, email, passportNumber, passportCountry, passportExpiry, frequentFlierNumbers, creditCard, trips, notes, owner } = req.body;
+
     await Request.findByIdAndUpdate(req.params.id, {
-      type,
-      name,
-      tag,
-      owner,
-      deadline,
-      status,
+      fullName,
+      dob,
+      address,
+      email,
+      passportNumber,
+      passportCountry,
+      passportExpiry,
+      frequentFlierNumbers: JSON.parse(frequentFlierNumbers),
+      creditCard,
+      trips: JSON.parse(trips),
+      notes,
+      owner
     });
+
     res.redirect('/dashboard');
   } catch (error) {
     console.error(error);
@@ -119,16 +134,15 @@ router.post('/:id/delete', isAuthenticated, async (req, res) => {
   }
 });
 
-// List all requests with dynamic search
 router.get('/search', isAuthenticated, async (req, res) => {
   try {
-    const searchQuery = req.query.q;
+    const searchQuery = req.query.q || ''; // Default to an empty string if no query parameter is provided
     let requests;
 
     if (searchQuery) {
-      // If there's a search query, perform a case-insensitive search on the 'name' field
+      // If there's a search query, perform a case-insensitive search on the 'fullName' field
       requests = await Request.find({
-        name: { $regex: new RegExp(searchQuery, 'i') },
+        fullName: { $regex: new RegExp(searchQuery, 'i') }
       }).populate('owner', '_id name profileImage'); // Populate the owner field with user data
     } else {
       // If there's no search query, list all requests
@@ -138,10 +152,11 @@ router.get('/search', isAuthenticated, async (req, res) => {
     // Respond with JSON data containing the search results
     res.json(requests);
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching requests:', error); // More specific error logging
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 module.exports = router;

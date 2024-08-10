@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Request</title>
+  <title>Edit Guest</title>
   <link rel="stylesheet" href="../../css/request-form.css">
 </head>
 <body>
@@ -14,62 +14,51 @@
 
   <main>
     <div class="horizontal-nav">
-      <div class="horizontal-nav-item">Edit Request</div>
+      <div class="horizontal-nav-item">Edit Guest</div>
       <div class="horizontal-nav-item">
         <a href="/dashboard">
-          <!-- <svg width="20px" height="20px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"><rect x="0" y="0" width="25.00" height="25.00" rx="0" fill="#161616" strokewidth="0"></rect></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 21.32L21 3.32001" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 3.32001L21 21.32" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
           Close
         </a>
       </div>
     </div>
 
     <div class="container">
-      <form action="/dashboard/<%= request._id %>/edit" method="POST">
+      <form action="/dashboard/<%= guest._id %>/edit" method="POST">
         <div>
-          <label for="type">Type:</label>
-          <select id="type" name="type" required>
-            <option value="Ticket" <% if (request.type === 'Ticket') { %> selected <% } %>>Ticket</option>
-            <option value="Issue" <% if (request.type === 'Issue') { %> selected <% } %>>Issue</option>
-            <option value="Bug" <% if (request.type === 'Bug') { %> selected <% } %>>Bug</option>
-          </select>
+          <label for="fullName">Full Name:</label>
+          <input type="text" id="fullName" name="fullName" value="<%= guest.fullName %>" required>
         </div>
         <div>
-          <label for="name">Name:</label>
-          <input type="text" id="name" name="name" value="<%= request.name %>" required>
+          <label for="dob">Date of Birth:</label>
+          <input type="date" id="dob" name="dob" value="<%= new Date(guest.dob).toISOString().split('T')[0] %>" required>
         </div>
         <div>
-          <label for="tag">Tag:</label>
-          <select id="tag" name="tag" required>
-            <option value="Feature" <% if (request.tag === 'Feature') { %> selected <% } %>>Feature</option>
-            <option value="Fix" <% if (request.tag === 'Fix') { %> selected <% } %>>Fix</option>
-            <option value="UI" <% if (request.tag === 'UI') { %> selected <% } %>>UI</option>
-            <option value="Urgent" <% if (request.tag === 'Urgent') { %> selected <% } %>>Urgent</option>
-            <option value="Danger" <% if (request.tag === 'Danger') { %> selected <% } %>>Danger</option>
-          </select>
+          <label for="address">Address:</label>
+          <input type="text" id="address" name="address" value="<%= guest.address %>" required>
         </div>
         <div>
-          <label for="owner">Owner:</label>
-          <select name="owner" id="owner" required> <!-- Add 'required' attribute -->
-            <option value="">Select Owner</option> <!-- Add an initial blank option -->
-            <% users.forEach(user => { %>
-              <option value="<%= user._id %>" <% if (user._id.toString() === request.owner.toString()) { %>selected<% } %>>
-                <%= user.name %>
-              </option>
-            <% }); %>
-          </select>
+          <label for="email">Email Address:</label>
+          <input type="email" id="email" name="email" value="<%= guest.email %>" required>
         </div>
         <div>
-          <label for="deadline">Deadline:</label>
-          <input type="date" id="deadline" name="deadline" value="<%= request.deadline.toISOString().split('T')[0] %>" required>
+          <label for="passportNumber">Passport Number:</label>
+          <input type="text" id="passportNumber" name="passportNumber" value="<%= guest.passportNumber %>" required>
         </div>
         <div>
-          <label for="status">Status:</label>
-          <select id="status" name="status" required>
-            <option value="Open" <% if (request.status === 'Open') { %> selected <% } %>>Open</option>
-            <option value="In Progress" <% if (request.status === 'In Progress') { %> selected <% } %>>In Progress</option>
-            <option value="Resolved" <% if (request.status === 'Resolved') { %> selected <% } %>>Resolved</option>
-            <option value="Closed" <% if (request.status === 'Closed') { %> selected <% } %>>Closed</option>
-          </select>
+          <label for="passportCountry">Passport Country:</label>
+          <input type="text" id="passportCountry" name="passportCountry" value="<%= guest.passportCountry %>" required>
+        </div>
+        <div>
+          <label for="passportExpiry">Passport Expiry:</label>
+          <input type="date" id="passportExpiry" name="passportExpiry" value="<%= new Date(guest.passportExpiry).toISOString().split('T')[0] %>" required>
+        </div>
+        <div>
+          <label for="frequentFlierNumber">Frequent Flier Number:</label>
+          <input type="text" id="frequentFlierNumber" name="frequentFlierNumber" value="<%= guest.frequentFlierNumber %>" required>
+        </div>
+        <div>
+          <label for="notes">Notes:</label>
+          <textarea id="notes" name="notes"><%= guest.notes %></textarea>
         </div>
         <div class="button-container">
           <button type="submit">Update</button>

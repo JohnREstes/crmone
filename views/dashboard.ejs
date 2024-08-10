@@ -8,7 +8,6 @@
 </head>
 <body>
   <header>
-
     <h1>OneCRM</h1>
     <div>
       <div class="notification-button">
@@ -16,11 +15,9 @@
       </div>
       <a href="/logout">Logout</a>
     </div>
-    
   </header>
 
   <main>
-    
     <div class="horizontal-nav">
       <div class="horizontal-nav-item">Requests</div>
       <div class="search-bar">
@@ -40,7 +37,6 @@
             <th>Name</th>
             <th>Tag</th>
             <th>Owner</th>
-            <th>Deadline</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -56,7 +52,6 @@
                 <img src="<%= request.owner.profileImage %>" alt="Profile" class="profile-image">
                 <%= request.owner.name %>
               </td>
-              <td><%= request.deadline.toISOString().slice(0, 10) %></td>
               <td><%= request.status %></td>
               <td>
                 <div class="action-icons">
@@ -78,16 +73,18 @@
     </div>  
   </main>
 
- 
   <script defer>
     // Client-side JavaScript for dynamic search
     const searchInput = document.getElementById('searchInput');
     const requestsTableBody = document.querySelector('.requests-table tbody');
-
+  
+    // Safe conversion of EJS variable to JSON
+    const requests = <%- JSON.stringify(requests) %>;
+  
     const updateDashboard = (requests) => {
       // Clear existing table rows
       requestsTableBody.innerHTML = "";
-
+  
       // Create new table rows with the search results
       requests.forEach(request => {
         const tr = document.createElement('tr');
@@ -100,7 +97,6 @@
             <img src="${request.owner.profileImage}" alt="Profile" class="profile-image">
             ${request.owner.name}
           </td>
-          <td>${request.deadline.slice(0, 10)}</td>
           <td>${request.status}</td>
           <td>
             <div class="action-icons">
@@ -119,24 +115,20 @@
         requestsTableBody.appendChild(tr);
       });
     };
-
-    searchInput.addEventListener('input', () => {
-      const searchQuery = searchInput.value.trim();
-      if (searchQuery !== '') {
-        fetch(`/dashboard/search?q=${encodeURIComponent(searchQuery)}`)
-          .then((response) => response.json())
-          .then((data) => {
-            updateDashboard(data);
-          })
-          .catch((error) => {
-            console.error('Error fetching search results:', error);
-          });
-      } else {
-        // If the search query is empty, show all requests on the dashboard
-        updateDashboard(<%- JSON.stringify(requests) %>);
-      }
+  
+    searchInput.addEventListener('input', (event) => {
+      const searchTerm = event.target.value.toLowerCase();
+      const filteredRequests = requests.filter(request => 
+        request.name.toLowerCase().includes(searchTerm) || 
+        request.type.toLowerCase().includes(searchTerm) ||
+        request.status.toLowerCase().includes(searchTerm)
+      );
+      updateDashboard(filteredRequests);
     });
+  
+    // Initial dashboard load
+    updateDashboard(requests);
   </script>
-
+  
 </body>
 </html>
